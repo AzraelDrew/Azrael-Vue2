@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础-指令</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <!-- v-cloak 在Vue渲染好之前一直存在  渲染好之后就会消失 -->
+        <input type="text" value=10>
+        <!-- v-model将age的值给了文本框的value，同时监听文本框的输入事件，输入时改变age -->
+        <!-- .number尝试转换为数字   .trim去空格 -->
+        <input type="text" v-model.number.trim="age" @keydown.enter="test"> <!-- 指令的参数必须是一个变量 -->
+        <!-- .lazy当文本框失去焦点时才更新，bulr事件触发 -->
+        <input type="text" v-model.lazy="age">
+        {{age+10}}
+        <ul>
+            <!--  arr的length长度决定有多少个li -->
+            <!-- 对style使用v-bind 参数必须是对象 -->
+            <li v-for='(item,i) in arr' :class="{zzz:i%2==0}" :style="{color:i%2==0?'red':'black'}">{{i}}-<a
+                    v-bind:href="`detail.html?id=${item}`">{{item}}</a></li>
+            <!-- 
+                v-bind可简写为： 通常用于绑定属性，如href/src/style/class
+                :style="{color:'red'}"
+                :class="{active:2>1}"
+                :href="`detail.html?id=${item}`" 
+            -->
+            <!-- i为下标  item为数组中的每一项 -->
+        </ul>
+        <hr>
+        <!-- v-show的参数必须是一个布尔值   控制display属性显示与隐藏，标签一直在-->
+        <h1 v-show="show">Azrael-show</h1>
+        <h1 v-show="!show">Ace-show</h1>
+        <!-- <h1 v-show="1">Ac-show</h1> -->
+
+        <!-- v-on事件监听   简写@   .once只能点击一次-->
+        <!-- <button @click="change">切换</button> <br> -->
+        <button @click.once="show = !show">切换</button>
+        <!-- 可以将简单的代码直接写在标签里   前面不需要this  写在methods中需要this-->
+        <hr>
+        <!-- v-if如果为true则创建标签，否则删除标签 -->
+        <h2 v-if="show">Azrael-if</h2>
+        <h2 v-if="!show">Ace-if</h2>
+
+        <!-- 如果是频繁的显示切换，同v-show 只操作一次的，用v-if -->
+
+
+        <hr>
+        <h1 v-text="str" v-red></h1>
+        <h1 v-html="str"></h1>
+        <h1 v-once>{{age}}</h1> <!-- v-once只会绑定一次  不再监听后续的变化，通常用于只渲染一次的场景 -->
+        <h1 v-red>{{age}}</h1>
+        <h1 v-color="color1">{{age}}</h1>
+    </div>
+    <hr>
+    <div id="app2">
+        App2
+        <h1 v-color="color2">Azrael</h1>
+        <h1 v-red>Azrael</h1>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+    <script>
+        //创建全局自定义指令
+        Vue.directive("red", (el, data) => {
+            // console.log(el);
+            el.style.color = "red";
+        })
+        // Vue.directive("color", (el, data) => {
+        //     console.log(data.value);
+        //     el.style.color = data.value;
+        // })
+
+
+        setTimeout(() => {
+            new Vue({
+                el: "#app", // el=element   挂载元素
+                //局部指令
+                directives: {
+                    color: (el, data) => {
+                        el.style.color = data.value;
+                    }
+                },
+                data() { //存放响应变量 
+                    return {
+                        show: true,
+                        age: 10,
+                        color1: "blue",
+                        str: "<button>zzz</button>",
+                        arr: [11, 12, 546, 234]
+                    }
+                },
+                methods: {
+                    change() {
+                        this.show = !this.show;
+                    },
+
+                    test(e) {
+                        // if (e.keyCode === 13) {     //也可以写在标签里
+                        alert("确定");
+                        // }
+                    }
+                },
+            })
+        }, 2000)
+        new Vue({
+            el: "#app2",
+            data() {
+                return {
+                    color2: "pink",
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

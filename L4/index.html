@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <label for="title">
+                标题
+                <input type="text" id="title" v-model="subject.title">
+            </label>
+        </div>
+        <div>
+            <label>
+                题型
+            </label>
+
+            <!-- input的name一致是 会互斥  即只能选择一个 -->
+            <label :for="`type_${i}`" v-for="(item,i) in types">
+                <!-- v-model="type"    等于   :checked="type===i" -->
+                <input :id="`type_${i}`" name="type" v-model="subject.type" :value="i" type="radio">{{item}}
+            </label>
+
+        </div>
+        <div v-if="isXZT">
+            <label>
+                选项
+            </label>
+
+            <ul style="padding-left:40px;">
+                <li v-for="(item,i) in subject.options">
+                    {{i | fmtOption}}.<input type="text" v-model="item.text">
+                    <button v-if="subject.options.length>4" @click="subject.options.splice(i,1)">删除</button>
+                    <!-- <button v-if="options.length>4" @click="options.pop()">删除</button> -->
+                </li>
+
+
+            </ul>
+            <button v-if="subject.options.length<10" @click="appendOption">添加选项</button>
+        </div>
+        <div>
+            <label for="" v-if="isNotJDT">
+                答案
+            </label>
+        </div>
+        <div v-if="isDXT">
+            <label v-for="(item,i) in subject.options">
+                <input type="radio" name="answer" :value="i | fmtOption" v-model="subject.answer">
+                {{i | fmtOption}}
+            </label>
+
+        </div>
+        <div v-if="isDUOXT">
+            <label v-for="(item,i) in subject.options">
+                <input type="checkbox" name="answer" :value="i | fmtOption" v-model="subject.answer">
+                {{i | fmtOption}}
+            </label>
+
+        </div>
+        <div v-if="isPDT">
+            <label>
+                <input type="radio" name="answer" value="T" v-model="subject.answer">正确
+            </label>
+            <label>
+                <input type="radio" name="answer" value="F" v-model="subject.answer">错误
+            </label>
+
+        </div>
+        <div v-if="isJDT">
+            <label for="desc">
+                解析
+                <textarea v-model="subject.desc" name="" id="desc" cols="30" rows="10"></textarea>
+            </label>
+        </div>
+        <button @click="save">保存并提交</button>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+    <script>
+        Vue.config.devtools = false;
+        Vue.config.productionTip = false;
+        let SUBJECT_TYPE = {
+            DANXUANTI: 0,
+            DUOXUANTI: 1,
+            PANDUANTI: 2,
+            JIANDATI: 3,
+
+        };
+
+        // let arr = [];
+        // for (let i = 0; i < 4; i++) {
+        //     arr.push({
+        //         text: ""
+        //     });
+        // }
+
+        // ES6的数组方法  Array.from(obj)   从一个 类似数组的对象中转换出数组
+
+
+        let obj = {
+            length: 4
+        };
+        let arr = Array.from(obj);
+        arr = arr.map(r => {
+            return {
+                text: ""
+            };
+        });
+        new Vue({
+            el: "#app",
+            data() {
+                return {
+                    subject: {
+                        answer: "",
+                        type: SUBJECT_TYPE.DANXUANTI,
+                        title: "",
+                        desc: "",
+                        options: Array.from({
+                            length: 4
+                        }).map(r => ({
+                            text: ""
+                        }))
+                    },
+                    types: ["单选题", "多选题", "判断题", "简答题"],
+                }
+            },
+            watch: {
+                // 题型切换
+                "subject.type"(val) {
+                    // 切换成多选题时,答案变成数组
+                    if (val === SUBJECT_TYPE.DUOXUANTI) {
+                        this.subject.answer = [];
+
+                    } else {
+                        this.subject.answer = "";
+                    }
+                },
+            },
+            methods: {
+                save() {
+
+                    // console.log(this.subject.type, this.subject.title, this.subject.desc);
+                    // console.log(JSON.stringify(this.subject.options));
+                    console.log(JSON.stringify(this.subject));
+                },
+                appendOption() {
+                    this.subject.options.push({
+                        text: ''
+                    })
+                }
+            },
+            computed: {
+                isXZT() {
+                    // return this.subject.type === SUBJECT_TYPE.DANXUANTI || this.subject.type === SUBJECT_TYPE
+                    //     .DUOXUANTI;
+                    return [SUBJECT_TYPE.DANXUANTI, SUBJECT_TYPE.DUOXUANTI].includes(this.subject.type);
+                },
+                isDXT() {
+                    return this.subject.type === SUBJECT_TYPE.DANXUANTI;
+                },
+                isDUOXT() {
+                    return this.subject.type === SUBJECT_TYPE.DUOXUANTI;
+                },
+                isPDT() {
+                    return this.subject.type === SUBJECT_TYPE.PANDUANTI;
+                },
+                isJDT() {
+                    return this.subject.type === SUBJECT_TYPE.JIANDATI;
+                },
+
+                isNotJDT() {
+                    return this.subject.type !== SUBJECT_TYPE.JIANDATI;
+                }
+            },
+            filters: {
+                fmtOption(val) {
+                    // return ["A", "B", "C", "D", "E", "F", "G", "H", "L", "J", "K"][val];
+                    return "ABCDEFGHLJK" [val];
+                }
+            },
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .label {
+            width: 80px;
+            text-align: center;
+        }
+
+        .label::after {
+            content: ':';
+        }
+
+        .editable-section {
+            width: 300px;
+            border: 1px solid #ccc;
+            margin: 100px;
+        }
+
+        .editable-section .headers {
+            padding: 10px;
+
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .j-s {
+            justify-content: space-between;
+        }
+    </style>
+</head <body>
+<div id="app">
+    <div class="editable-section">
+        <div class="header flex j-s">
+            <div>基本信息</div>
+            <div>
+                <template v-if="isEdit">
+                    <button @click="confirm">确定</button>
+                    <button @click="cancel">取消</button>
+                </template>
+                <button v-else @click="edit">编辑</button>
+            </div>
+        </div>
+        <ul>
+            <li class="flex">
+                <div class="label">昵称</div>
+                <div class="content">
+                    <input v-if="isEdit" type="text" v-model="info.nickname">
+                    <div v-else>{{info.nickname}}</div>
+                </div>
+            </li>
+            <li class="flex">
+                <div class="label">年龄</div>
+                <div class="content">
+                    <input v-if="isEdit" type="number" v-model="info.age">
+                    <div v-else>{{info.age}}</div>
+                </div>
+            </li>
+            <li class="flex">
+                <div class="label">签名</div>
+                <div class="content">
+                    <textarea v-if="isEdit" type="text" v-model="info.sign"></textarea>
+                    <div v-else>{{info.sign}}</div>
+                </div>
+            </li>
+        </ul>
+        {{bakInfo}}
+    </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                isEdit: false,
+                bakInfo: null,
+                info: {
+                    nickname: "张三",
+                    age: "20",
+                    sign: "Hello World!",
+                }
+            }
+        },
+        methods: {
+
+            edit() {
+                this.isEdit = !this.isEdit;
+                // this.bakInfo = this.info    //this,info 为引用类型  两个对象会同时改变
+
+                // 拷贝一份对象  彼此间没有引用关系
+                this.bakInfo = Object.assign({}, this.info);
+            },
+            confirm() {
+                this.isEdit = !this.isEdit;
+                this.bakInfo = null;
+
+            },
+            cancel() {
+                this.isEdit = !this.isEdit
+                this.info = this.bakInfo;
+                this.bakInfo = null;
+
+            }
+        }
+
+    })
+</script>
+</body>
+
+</html>

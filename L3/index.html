@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="keywords">
+        <ul>
+            <li v-for="item in userList">姓名：{{item.name}}-性别：{{item.gender | fmtGender}}</li>
+            <hr>
+            <li v-for="item in maleList">姓名：{{item.name}}-性别：{{item.gender | fmtGender}}</li>
+            <!-- <li v-for="item in userList.filter(r=>r.gender==='男')">{{item.id}}-{{item.name}}-{{item.gender}}</li> -->
+        </ul>
+        <hr>
+        <ul>
+            <li v-for="item in femaleList">姓名：{{item.name}}-性别：{{item.gender | fmtGender}}</li>
+            <!-- filter过滤器 -->
+            <!-- <li v-for="item in userList.filter(r=>r.gender==='女')">{{item.id}}-{{item.name}}-{{item.gender}}</li> -->
+        </ul>
+        <hr>
+        {{price | fmtMoney}}---{{price_us | fmtMoney}}
+        <hr>
+
+        <button @click="count--" :disabled="count<=1">-</button>
+        {{count}}
+        <button @click="count++" :disabled="count>=5">+</button>
+        <button @click="count=10">10</button>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js">
+    </script>
+    <script>
+        //全局过滤器
+        Vue.filter("fmtMoney", (val) => {
+            return val.toFixed(2)
+
+        })
+
+        new Vue({
+            el: "#app",
+            watch: {
+                // 将data中的变量名白农村一个函数
+                count(val) {
+                    if (val <= 1) {
+                        val = 1;
+                    } else if (val >= 5) {
+                        val = 5;
+                    }
+                    this.count = val;
+                },
+                keywords(val) {
+                    console.log("去后台搜索" + val);
+                }
+            },
+            //局部过滤器
+            filters: {
+                // fmtMoney(val) {
+                //     return val.toFixed(2)
+                // },
+                fmtGender(val) {
+                    // return val + "111"
+
+
+                    /*
+                          if (val === 0) {
+                             return "男"
+                         }
+                         return "女" 
+                    */
+
+                    /* 
+                       let arr = ["男", "女"];
+                    return arr[val]
+                    */
+
+                    /*  let arr = ["男", "女"];
+
+                            if (arr[val]) {
+                                return arr[val]
+                            }
+                            return "未知" 
+                            
+                    */
+                    return ["男", "女"][val] || "未知"
+
+                }
+            },
+            // 利用已有的数据生存新的变量，和data中的属性一样都可以被this获取
+            //可以简化页面模板
+            // 如果数据是重复的，则可以自动缓存
+            computed: {
+                maleList() {
+                    return this.userList.filter(r => r.gender === 0);
+                },
+                femaleList() {
+                    return this.userList.filter(r => r.gender === 1);
+                },
+                price_us() {
+                    return this.price / 6.7;
+                }
+            },
+            data() {
+                return {
+                    keywords: "",
+                    count: 0,
+                    price: 100,
+                    userList: [{
+                        id: 1,
+                        name: "aaa",
+                        gender: 0
+                    }, {
+                        id: 2,
+                        name: "bbb",
+                        gender: 1
+                    }, {
+                        id: 3,
+                        name: "ccc",
+                        gender: 0
+                    }, {
+                        id: 3,
+                        name: "ccc",
+                        gender: 4
+                    }]
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

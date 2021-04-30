@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .flip-list-enter-active {
+            transition: all .3s ease;
+        }
+
+        .flip-list-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+
+        .flip-list-enter,
+        .flip-list-leave-to
+
+        /* .flip-list-leave-active for below version 2.1.8 */
+            {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+
+        .flip-list-move {
+            transition: transform 1s;
+        }
+    </style>
+</head <body>
+<div id="app">
+    <ul style="margin-left: 40px;margin-top: 40px;">
+
+        <transition-group name="flip-list" tag="ul">
+            <!--
+                有多个元素时使用 transition-group
+                但个元素使用transition
+                
+                将需要实现的效果方在一个name里面 -->
+
+            <li v-for="(item,i) in list" :key="item.id">
+                {{item.name}}
+                <button @click="moveUp(i)" :disabled="i===0">上移</button>
+                <button @click="moveDown(i)" :disabled="i===list.length-1">下移</button>
+                <button v-if="list.length>2" @click="list.splice(i,1)">删除</button>
+            </li>
+            </transitiongr-group>
+            <!-- <li v-for="(item,i) in list">
+                {{item}}
+                <button @click="moveUp(i)" :disabled="i===0">上移</button>
+                <button @click="moveDown(i)" :disabled="i===list.length-1">下移</button>
+                </li> -->
+
+    </ul>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                list: [{
+                        id: 1,
+                        name: "user-1"
+                    },
+                    {
+                        id: 2,
+                        name: "user-2"
+                    },
+                    {
+                        id: 3,
+                        name: "user-3"
+                    },
+                    {
+                        id: 4,
+                        name: "user-4"
+                    },
+
+                ]
+            }
+        },
+        methods: {
+            moveUp(i) {
+                /* 
+                let prev = this.list[i - 1];
+                this.list[i - 1] = this.list[i];
+                this.list[i] = prev; 
+                此方法没有被监听             访问下面名的网站      
+                https://cn.vuejs.org/v2/guide/reactivity.html#%E6%A3%80%E6%B5%8B%E5%8F%98%E5%8C%96%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9
+                */
+                // let prev = this.list[i - 1]
+                // this.$set(this.list, i - 1, this.list[i])
+                // this.$set(this.list, i, prev)
+                this.list.splice(i, 0, this.list.splice(i - 1, 1)[0])
+
+                // splice(a, b, c)   a表示从那里开始   不表示删除几个    c表示把什么插入在a的位置
+
+
+            },
+            moveDown(i) {
+                /*                
+                 let next = this.list[i + 1];
+                this.list[i + 1] = this.list[i];
+                this.list[i] = next; 
+                */
+                // let next = this.list[i + 1]
+                // this.$set(this.list, i + 1, this.list[i])
+                // this.$set(this.list, i, next)
+                this.list.splice(i, 0, this.list.splice(i + 1, 1)[0])
+
+            }
+        }
+
+    })
+    let arr = [1, 2, 4];
+    arr.splice(2, 0, 3)
+    console.log(arr);
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            outline: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+
+
+        .jiange {
+            margin-bottom: 20px;
+        }
+
+        .xuanxiang {
+            padding-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="jiange">
+            <label for="title">
+                标题 <input id="title" type="text" v-model="subject.title">
+            </label>
+        </div>
+        <div class="jiange">
+            题型
+            <label :for="`type_${i}`" v-for="(item,i) in types">
+                <input :id="`type_${i}`" name=" i" v-model="subject.type" :value="i" type="radio">{{item}}
+            </label>
+        </div>
+        <button class="jiange" @click="appendOption" v-if="subject.options.length<10">添加选项</button>
+        <div class="jiange" v-if="isXZT">
+            选项
+            <ul style="padding-left: 40px;">
+                <li class="xuanxiang" v-for="(item,i) in subject.options">
+                    <p>{{i | fmtOption}}</p><input type="text" v-model="item.text">
+                    <button v-if="subject.options.length>4" @click="subject.options.splice(i,1)">删除</button>
+                </li>
+            </ul>
+        </div>
+        <div class="jiange" v-if="isNotJDT">
+            答案
+        </div>
+        <div class="jiange" v-if="isDXT">
+            <label class="xuanxiang" v-for="(item,i) in subject.options">
+                <input name="answer" v-model="subject.answer" :value="i | fmtOption" type="radio">{{i | fmtOption}}
+            </label>
+        </div>
+        <div class="jiange" v-if="isDUOXT">
+            <label v-for="(item,i) in subject.options">
+                {{i | fmtOption}} <input name="answer" v-model="subject.answer" :value="i | fmtOption" type="checkbox">
+            </label>
+        </div>
+        <div class="jiange" v-if="isPDT">
+            <label>
+                <input type="radio" name="answer" value="T" v-model="subject.answer">正确
+            </label>
+            <label>
+                <input type="radio" name="answer" value="F" v-model="subject.answer">错误
+            </label>
+
+        </div>
+        <div class="jiange" v-if="isJDT">
+            解析
+            <textarea name="" id="desc" cols="30" rows="10" v-model="subject.desc"></textarea>
+        </div>
+        <button @click="save">提交并保存</button>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+    <script>
+        Vue.config.devtools = false;
+        Vue.config.productionTip = false;
+        let SUBJECT_TYPE = {
+            DANXUANTI: 0,
+            DUOXUANTI: 1,
+            PANDUANTI: 2,
+            JIANDATI: 3,
+
+        };
+        new Vue({
+            el: "#app",
+            data() {
+                return {
+                    subject: {
+                        title: "",
+                        type: 0,
+                        answer: "",
+                        desc: "",
+                        options: Array.from({
+                            length: 4
+                        }).map(r => ({
+                            text: ""
+                        }))
+                    },
+                    types: ["单选题", "多选题", "判断题", "简答题"],
+
+                }
+            },
+            watch: {
+                "subject.type"(val) {
+                    if (val === SUBJECT_TYPE.DUOXUANTI) {
+                        this.subject.answer = [];
+                    } else {
+                        this.subject.answer = "";
+                    }
+                }
+            },
+            methods: {
+                save() {
+                    console.log(JSON.stringify(this.subject));
+                },
+                appendOption() {
+                    return this.subject.options.push({
+                        text: ""
+                    })
+                }
+            },
+            filters: {
+                fmtOption(val) {
+                    return "ABCDEFGHLJK" [val];
+                }
+            },
+            computed: {
+                isXZT() {
+                    return [SUBJECT_TYPE.DANXUANTI, SUBJECT_TYPE.DUOXUANTI].includes(this.subject.type);
+                },
+                isDXT() {
+                    return this.subject.type === SUBJECT_TYPE.DANXUANTI;
+                },
+                isDUOXT() {
+                    return this.subject.type === SUBJECT_TYPE.DUOXUANTI;
+                },
+                isPDT() {
+                    return this.subject.type === SUBJECT_TYPE.PANDUANTI;
+                },
+                isJDT() {
+                    return this.subject.type === SUBJECT_TYPE.JIANDATI;
+                },
+                isNotJDT() {
+                    return this.subject.type !== SUBJECT_TYPE.JIANDATI;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

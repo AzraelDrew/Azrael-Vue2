@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命周期</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        {{age}}
+        <input type="text" v-model="age">
+        <ul>
+            <li v-for="item in 10">{{item}}</li>
+        </ul>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    age: 10
+                }
+            },
+            beforeCreate() {
+                console.log("bedforeCreate", this.age);
+            },
+            created() {
+                //数据初始化完成，可以进行数据获取操作
+                console.log("created", this.age);
+
+            },
+            beforeMount() {
+                console.log("beforeMount", (document.getElementsByTagName("li").length));
+            },
+            mounted() {
+                //DOM初始化完成，可以进行页面样式处理
+                console.log("mounted", (document.getElementsByTagName("li").length));
+
+            },
+            beforeDestroy() {
+                //如果页面中自己写了绑定事件等操作，需要在此解除绑定
+                console.log("beforeDestroy");
+            },
+            destroyed() {
+                console.log("destroyed");
+
+            },
+            beforeUpdate() {
+                console.log("beforeUpdate");
+            },
+            updated() {
+                console.log("updated");
+            },
+        })
+        // setTimeout(() => {
+        //     app.$destroy()
+        // }, 2000)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    A [v-cloak] {
+      display: none;
+    }
+
+    .btn {
+
+      width: 120px;
+      background: red;
+      color: white;
+      border: 0;
+      padding: 10px 0;
+      border-radius: 5px;
+      outline: none;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+
+    .btn:active {
+      box-shadow: 2px 2px 5px #ff0;
+    }
+
+    .green {
+      background: green;
+    }
+
+    .large {
+      width: 220px;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .a-c {
+      align-items: center;
+    }
+
+    .j-s {
+      justify-content: space-between;
+    }
+
+    .j-c {
+      justify-content: center;
+    }
+  </style>
+</head <body>
+<div id="app">
+  <!-- <button class="btn">登录</button>
+  <button class="btn large">登录</button>
+  <button class="btn large green">登录</button>
+  <button class="btn green">登录</button> -->
+  <btn>登录</btn>
+  <btn>注册</btn>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
+  new Vue({
+    el: "#app",
+    // 局部组件
+    components: {
+      // 定义一个叫btn的组件  对应的HTML内容时template中的标签
+      // <slot>默认值</slot>     默认插槽   当没有传值时则使用默认值  
+      btn: {
+        template: `
+        <button class="btn">
+        <slot></slot>    
+        </button>
+
+        `
+      },
+      center: {
+        template: `
+        <div ></div>
+        `
+      }
+    },
+    data() {
+      return {
+
+      }
+    },
+
+  })
+</script>
+</body>
+
+</html>
