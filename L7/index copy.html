@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .btn {
+      width: 120px;
+      background: red;
+      color: #fff;
+      border: 0;
+      padding: 10px 0;
+      border-radius: 5px;
+      letter-spacing: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn:active {
+      /* background */
+      box-shadow: 2px 2px 5px #eee
+    }
+
+    .flex {
+      display: flex
+    }
+
+    .j-c {
+      justify-content: center;
+    }
+
+    .j-s {
+      justify-content: space-between
+    }
+
+    .a-c {
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <button class="btn">登录</button>
+    <btn>登陆</btn>
+    <btn>注册</btn>
+    <btn>购买</btn>
+    <btn></btn>
+    <center>
+      <h1>Hello</h1>
+    </center>
+    <center>
+      <h1>Hello</h1>
+      <template v-slot:a>
+        Hello-a
+      </template>
+      <template v-slot:b>
+        Hello-b
+      </template>
+    </center>
+    <box>
+      <template #title>
+        11111
+      </template>
+      <div id="echarts"></div>
+    </box>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+
+        }
+      },
+      // 局部组件
+      components: {
+        // 定义了一个组件叫btn，对应的html内容是template中的标签
+        // <slot>默认值</slot>     默认插槽   当没有传值时则使用默认值  
+        // <slot name="a"></slot>     加上name表示具名插槽
+        btn: {
+          template: `
+          <button class="btn">
+            <slot>按钮</slot>
+          </button>
+          `
+        },
+        center: {
+          template: `
+          <div class="flex j-c a-c">
+            default:<slot></slot>
+            aaaaaaa:<slot name="a"></slot>
+            bbbbbbb:<slot name="b"></slot>
+          </div>
+          `
+        },
+        box: {
+          template: `
+          <div class="box">
+      <div class="bos-title">
+        <slot name="title"></slot>
+      </div>
+      <slot></slot>
+    </div>
+              `
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

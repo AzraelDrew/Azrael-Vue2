@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .green {
+      background: green;
+      color: white;
+      border: 0;
+    }
+
+    .red {
+      background: red;
+      color: white;
+      border: 0;
+    }
+
+    .black {
+      background: black;
+      color: white;
+      border: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <template id="tmp">
+    <div>
+      <slot>
+        {{label}}----{{icon}}
+      </slot>
+    </div>
+  </template>
+  <div id="app">
+    <btn>login</btn>
+    <btn type="danger">login</btn>
+    <btn type="success">login</btn>
+    <btn type="123123">login</btn>
+    <hr>
+    <zzz label='zzzz' :icon='11'></zzz> <!-- label 、icon的值为实参 -->
+    <zzz :icon="111"></zzz>
+    <zzz :label="[11,22,33]" :icon="111"></zzz>
+    <zzz :label="11" :icon="111"></zzz> <!-- 使用:label label的值会转换为数字 -->
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+
+    Vue.component("btn", {
+      props: {
+        type: {
+          type: String,
+          default: "default",
+          validator(val) { //验证器
+            return ["default", "danger", "success"].includes(val);
+          }
+        }
+      },
+      template: `
+      <button :class="{black:type==='default',green:type==='success',red:type==='danger'}">
+        <slot></slot>
+      </button>
+  `
+    })
+
+    Vue.component('zzz', {
+      // props: ['label', 'icon'], //label 、icon  为形参
+      props: {
+        label: {
+          type: [String, Array], //可以传多个类型
+          default: "标题" //默认值
+        },
+        icon: {
+          type: Number,
+          required: true //必填 
+        },
+
+      },
+      template: '#tmp'
+
+    })
+    new Vue({
+      el: "#app",
+      data() {
+        return {}
+      },
+      components: {
+
+      }
+    })
+  </script>
+</body>
+
+</html>

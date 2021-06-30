@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head <body>
+<div id="app" v-cloak>
+  <my-list :data="list"></my-list>
+  <my-list :data="list1"></my-list>
+  <my-list :data="list2">
+    <template v-slot='{row}'>
+      <a href="">
+        {{row.name}}
+      </a>
+    </template>
+  </my-list>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
+  new Vue({
+    el: "#app",
+    components: {
+      'my-list': {
+        props: ["data"],
+        // 在插槽里面绑定的数据可以传出来
+        template: `
+        <ul>
+          <li v-for='(item,i) in data'>
+            {{item.id}}
+          <slot :row="item">
+            {{item.name}}
+          </slot>
+          </li>
+        </ul>
+        `
+      }
+    },
+    data() {
+      return {
+        list: [{
+            id: 1,
+            name: "azrael"
+          },
+          {
+            id: 2,
+            name: "ace"
+          }
+
+        ],
+        list1: [{
+            id: 1,
+            name: "azrael11"
+          },
+          {
+            id: 2,
+            name: "ace11"
+          }
+
+        ],
+        list2: [{
+            id: 1,
+            name: "azrael22"
+          },
+          {
+            id: 2,
+            name: "ace22"
+          }
+
+        ],
+      }
+    },
+
+  })
+</script>
+</body>
+
+</html>

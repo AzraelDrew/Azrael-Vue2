@@ -7,13 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-    }
-
-    A [v-cloak] {
+    c A [v-cloak] {
       display: none;
     }
 
@@ -66,6 +60,23 @@
   <button class="btn green">登录</button> -->
   <btn>登录</btn>
   <btn>注册</btn>
+  <center>Hello</center>
+  <center>
+    <template v-slot:a>
+      <!-- v-slot  可以简写为# -->
+      Hello-a
+    </template>
+    <template #b>
+      Hello-b
+    </template>
+    <h1>hello</h1>
+  </center>
+  <box>
+    <template #title>
+      <h1>Hello</h1>
+    </template>
+    <div id="echarts"></div>
+  </box>
 </div>
 <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
 <script>
@@ -87,8 +98,19 @@
       },
       center: {
         template: `
-        <div ></div>
+        <div class="flex j-c a-c">
+        a=<slot name="a"></slot>
+        b=<slot name="b"></slot>
+        deafault=<slot></slot>
+        </div>
         `
+      },
+      box: {
+        template: `
+        <div class="box">
+          <div class="box-title"><slot name="title"></slot></div>
+          <slot></slot>
+        </div>`
       }
     },
     data() {

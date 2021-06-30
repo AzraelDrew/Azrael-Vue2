@@ -6,27 +6,43 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-</head>
-
-<body>
-  <script>
-    let a = 10;
-    let b = a;
-    console.log(a);
-    console.log(b);
-    let obj = {
-      age: 20,
-      name: "张三"
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
     }
-    let f = obj;
-    f.age = 40;
-    console.log(obj.age);
-    console.log(f.age);
-    let g = Object.assign({}, obj);
-    g.age = 60;
-    console.log(obj.age);
-    console.log(g.age);
-  </script>
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head <body>
+
+<div id="app">
+  <input type="text" v-model="age">
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
+  new Vue({
+    el: "#app",
+    mounted() {
+      console.log(this.age);
+    },
+    updated() {
+      console.log(this.age);
+
+    },
+    data() {
+      return {
+        age: 20
+      }
+    },
+
+  })
+</script>
 </body>
 
 </html>

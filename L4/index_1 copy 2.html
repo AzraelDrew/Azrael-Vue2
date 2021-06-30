@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head <body>
+<div id="app">
+  <div>
+    <label for="title">
+      标题
+      <input type="text" id="title" v-model="subject.title">
+    </label>
+  </div>
+  <div>
+    <label>
+      题型
+    </label>
+    <label :for="`type${i}`" v-for="(item,i) in types">
+      <input :id="`type${i}`" type="radio" :value="i" name="type" v-model="subject.type">
+      {{item}}
+    </label>
+  </div>
+  <button @click="appendOption" v-show="subject.options.length<10">添加选项</button>
+  <div v-if="subject.type!==3">
+    <label for="">
+      选项
+    </label>
+    <ul style="padding-left: 40px;">
+      <li v-for="(item,i) in subject.options">
+        {{i | fmtOption}}.
+        <input type="text" v-model="item.text">
+        <button v-show="subject.options.length>4" @click="subject.options.splice(i,1)">删除</button>
+      </li>
+    </ul>
+  </div>
+  <div v-show="subject.type!==3">
+    <label for="">
+      答案
+    </label>
+    <div v-if="subject.type===0">
+      <label :for="`answer${i}`" v-for="(item,i) in subject.options">
+        <input :id="`answer${i}`" type="radio" name="answer" :value="i | fmtOption" v-model="subject.answer">
+        {{i | fmtOption}}
+      </label>
+    </div v-if="subject.type===1">
+    <div>
+      <label :for="`answer${i}`" v-for="(item,i) in subject.options">
+        <input :id="`answer${i}`" type="checkbox" name="answer" :value="i | fmtOption" v-model="subject.answer">
+        {{i | fmtOption}}
+      </label>
+    </div v-if="subject.type===2">
+    <div>
+      <label for="true">
+        <input type="radio" id="true" name="answer" v-model="subject.answer">对
+      </label>
+      <label for="false">
+        <input type="radio" id="false" name="answer" v-model="subject.answer">错
+      </label>
+    </div>
+  </div>
+  <div>
+    <label for="">
+      解析
+    </label>
+    <textarea name="" id="desc" cols="30" rows="10"></textarea>
+  </div>
+  <button @click="save">保存并提交</button>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
+  new Vue({
+    el: "#app",
+    data() {
+      return {
+        subject: {
+          desc: "",
+          title: "",
+          type: 0,
+          answer: [],
+          options: Array.from({
+            length: 4
+          }).map(r => ({
+            text: ""
+          }))
+        },
+        types: ["单选题", "多选题", "判断题", "简答题"]
+      }
+    },
+    filters: {
+      fmtOption(value) {
+        return "ABCDEFGHLJK" [value];
+      }
+    },
+    methods: {
+      appendOption() {
+        this.subject.options.push({
+          text: ""
+        })
+      },
+      save() {
+        console.log(JSON.stringify(this.subject));
+      }
+    },
+    watch: {
+      'subject.type'(value) {
+        if (value === 1) {
+          this.subject.answer = [];
+        } else {
+          this.subject.answer = "";
+        }
+      }
+    }
+
+  })
+</script>
+</body>
+
+</html>

@@ -67,30 +67,31 @@
     </div>
     <ul>
       <li class="flex">
-        <div class="label">昵称</div>
-        <div class="content">
-          <input v-if="isEdit" type="text" v-model="info.nickname">
-          <div v-else>{{info.nickname}}</div>
+        <div class="label">
+          昵称
         </div>
+        <input v-if="isEdit" type="text" v-model="info.name">
+        <div v-else>{{info.name}}</div>
       </li>
       <li class="flex">
-        <div class="label">年龄</div>
-        <div class="content">
-          <input v-if="isEdit" type="number" v-model="info.age">
-          <div v-else>{{info.age}}</div>
+        <div class="label">
+          年龄
         </div>
+        <input v-if="isEdit" type="text" v-model="info.age">
+        <div v-else>{{info.age}}</div>
       </li>
       <li class="flex">
-        <div class="label">签名</div>
-        <div class="content">
-          <textarea v-if="isEdit" type="text" v-model="info.sign"></textarea>
-          <div v-else>{{info.sign}}</div>
+        <div class="label">
+          签名
         </div>
+        <input v-if="isEdit" type="text" v-model="info.sign">
+        <div v-else>{{info.sign}}</div>
       </li>
     </ul>
   </div>
 </div>
-<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js">
+</script>
 <script>
   Vue.config.devtools = false;
   Vue.config.productionTip = false;
@@ -101,34 +102,27 @@
         isEdit: false,
         bakInfo: null,
         info: {
-          nickname: "张三",
-          age: "20",
-          sign: "Hello World!",
+          name: "张三",
+          age: 20,
+          sign: "Hello World!"
         }
       }
     },
     methods: {
-
       edit() {
         this.isEdit = !this.isEdit;
-        // this.bakInfo = this.info    //this,info 为引用类型  两个对象会同时改变
-
-        // 拷贝一份对象  彼此间没有引用关系
         this.bakInfo = Object.assign({}, this.info);
       },
       confirm() {
         this.isEdit = !this.isEdit;
         this.bakInfo = null;
-
       },
       cancel() {
-        this.isEdit = !this.isEdit
+        this.isEdit = !this.isEdit;
         this.info = this.bakInfo;
         this.bakInfo = null;
-
       }
-    }
-
+    },
   })
 </script>
 </body>

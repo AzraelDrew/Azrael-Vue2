@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <h1>
+      {{count1}}
+    </h1>
+    <input type="text" v-model.number="count1">
+    <hr>
+    <zzz :count="count1" @zz="setMyCount"></zzz> <!-- @zz  使用组件内的事件 -->
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+
+    Vue.component("zzz", {
+      // 组件内不允许修改props的变量(只读 )
+      props: {
+        count: {
+          type: Number,
+          default: 0
+        }
+      },
+
+      template: `
+      <h1>
+      {{count}}
+      <button @click="setCount">change</button>
+      </h1>
+      `,
+      methods: {
+        setCount() {
+          // ue提供的用于触发本组件自定义事件的方法
+          this.$emit("zz", 2021) //zz为事件名称    2021为传出去的数据在methods中的函数作为参数接受
+        }
+      }
+    })
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          count1: 20
+        }
+      },
+      methods: {
+        setMyCount(data) { //data为组件内传出的2021
+          this.count1 = data
+        }
+      }
+
+    })
+  </script>
+</body>
+
+</html>

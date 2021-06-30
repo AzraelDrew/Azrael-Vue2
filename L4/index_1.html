@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <label for="title">
+        标题<input type="text" id='title' v-model="subject.title">
+      </label>
+    </div>
+    <div>
+      <label>
+        题型
+      </label>
+      <label :for="`type${i}`" v-for="(item,i) in types">
+        <input type="radio" :id="`type${i}`" name=" type" v-model="subject.type" :value='i'>{{item}}
+      </label>
+    </div>
+    <button @click="appendOption" v-show="subject.options.length<10">添加选项</button>
+    <div v-if="isXZT">
+      <label>
+        选项
+      </label>
+      <ul style="padding-left: 40px;">
+        <li v-for="(item,i) in subject.options">
+          {{i | fmtOption}}.
+          <input type="text" v-model="item.text" v-model="subject.answer">
+          <button @click='subject.options.splice(i,1)' v-show="subject.options.length>4">删除</button>
+        </li>
+      </ul>
+    </div>
+    <div v-if="isNotJDT">
+      <label>
+        答案
+      </label>
+      <div v-if="isDXT">
+        <label :for="`answer${i}`" v-for="(item,i) in subject.options">
+          <input :id="`answer${i}`" type="radio" name="answer" :value="i | fmtOption" v-model="subject.answer">
+          {{i | fmtOption}}
+        </label>
+      </div>
+      <div v-if='isDUOXT'>
+        <label :for="`answer${i}`" v-for="(item,i) in subject.options">
+          <input :id="`answer${i}`" type="checkbox" name="answer" :value="i | fmtOption" v-model="subject.answer">
+          {{i | fmtOption}}
+        </label>
+      </div>
+      <div v-if='isPDT'>
+        <label for="true" style="padding-right: 20px;">
+          <input id="true" type="radio" name="answer" value="T" v-model="subject.answer">对
+        </label>
+        <label for="false">
+          <input id="false" type="radio" name="answer" value="F" v-model="subject.answer">错
+        </label>
+      </div>
+    </div>
+    <div>
+      <label for="desc">
+        解析
+      </label>
+      <textarea name="" v-model="subject.desc" id="desc" cols="30" rows="2"></textarea>
+    </div>
+    <button @click='save'>保存并提交</button>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    let SUBJECT_TYPE = {
+      DANXUANTI: 0,
+      DUOXUANTI: 1,
+      PANDUANTI: 2,
+      JIANDATI: 3,
+
+    };
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          subject: {
+            type: SUBJECT_TYPE.DANXUANTI,
+            desc: "",
+            title: "",
+            answer: [],
+            options: Array.from({
+              length: 4
+            }).map(r => ({
+              text: ''
+            }))
+          },
+          types: ['单选题', '多选题', '判断题', '简答题'],
+        }
+      },
+      watch: {
+        'subject.type'(value) {
+          if (value === 1) {
+            this.subject.answer = []
+          } else {
+            this.subject.answer = '';
+          }
+        }
+      },
+      computed: {
+        isXZT() {
+          // return this.subject.type === SUBJECT_TYPE.DANXUANTI || this.subject.type === SUBJECT_TYPE.DUOXUANTI;
+          return [SUBJECT_TYPE.DANXUANTI, SUBJECT_TYPE.DUOXUANTI].includes(this.subject.type);
+        },
+        isDXT() {
+          return this.subject.type === SUBJECT_TYPE.DANXUANTI;
+        },
+        isDUOXT() {
+          return this.subject.type === SUBJECT_TYPE.DUOXUANTI;
+        },
+        isPDT() {
+          return this.subject.type === SUBJECT_TYPE.PANDUANTI;
+        },
+        isJDT() {
+          return this.subject.type === SUBJECT_TYPE.JIANDATI;
+        },
+
+        isNotJDT() {
+          return this.subject.type !== SUBJECT_TYPE.JIANDATI;
+        }
+      },
+      filters: {
+        fmtOption(value) {
+          return "ABCDEFGHLJK" [value];
+        }
+      },
+      methods: {
+        appendOption() {
+          this.subject.options.push({
+            text: ""
+          })
+        },
+        save() {
+          console.log(JSON.stringify(this.subject));
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

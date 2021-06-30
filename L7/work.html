@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    #app {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .green {
+      background: green;
+    }
+
+    .red {
+      background: red;
+    }
+
+    #small {
+      width: 50px;
+    }
+
+    #large {
+      width: 100px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    <s-btn>Log In</s-btn>
+    <s-btn>
+      <template #icon> <i class="fa fa-address-book" aria-hidden="true"></i></template>
+      Log In
+    </s-btn>
+    <s-btn type="green">Log In</s-btn>
+    <s-btn type="red">Log In</s-btn>
+    <s-btn type="red" size="small">Log In</s-btn>
+    <s-btn type="red" size="large">
+      <template #icon>-</template>
+      Log In</s-btn>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+
+        }
+      },
+      components: {
+        "s-btn": {
+          props: {
+            type: {
+              type: String,
+              default: "white"
+            },
+            size: {
+              size: String,
+              default: "small"
+            }
+          },
+          template: `
+        <button :class="type" :id="size" style="width:100px">
+        <slot name="icon"></slot>
+        <slot></slot>
+        </button>
+        `
+        }
+      }
+
+    })
+  </script>
+</body>
+
+</html>

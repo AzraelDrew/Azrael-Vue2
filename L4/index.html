@@ -89,7 +89,7 @@
                 <textarea v-model="subject.desc" name="" id="desc" cols="30" rows="10"></textarea>
             </label>
         </div>
-        <button @click="save">保存并提交</button>
+        <button @click="save">保存并提交</buttonA>
     </div>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
     <script>
@@ -183,7 +183,6 @@
                 isJDT() {
                     return this.subject.type === SUBJECT_TYPE.JIANDATI;
                 },
-
                 isNotJDT() {
                     return this.subject.type !== SUBJECT_TYPE.JIANDATI;
                 }

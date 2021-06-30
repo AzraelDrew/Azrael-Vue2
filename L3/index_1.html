@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head <body>
+<div id="app">
+  <ul>
+    <li v-for="item in userList">
+      {{item.id}}
+      {{item.name}}
+      {{item.gender | fmtGender}}
+    </li>
+  </ul>
+  <hr>
+  <ul>
+    <li v-for="item in userList.filter(r=>r.gender===0)">
+      {{item.id}}
+      {{item.name}}
+      {{item.gender | fmtGender}}
+    </li>
+  </ul>
+  <hr>
+  {{price}}---{{price_us | fmtMoney}}
+  <ul>
+    <li v-for="item in femaleList">
+      {{item.id}}
+      {{item.name}}
+      {{item.gender | fmtGender}}
+    </li>
+  </ul>
+  <button @click="count--" :disabled='count<=1'>-</button>
+  {{count}}
+  <button @click="count++" :disabled='count>=5'>+</button>
+  <button @click='count=10'>count=10</button>
+  {{femaleList}}
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
+  // 全局过滤器
+  Vue.filter('fmtMoney', (value) => {
+    return value.toFixed(2);
+  })
+  new Vue({
+    el: "#app",
+    // computed 利用已有的数据新的变量，和data中的书信一样都可以被this获取,如果数据是重复的，会自动缓存
+    computed: {
+      femaleList() {
+        return this.userList.filter(r => r.gender === 1)
+      },
+      price_us() {
+        return this.price / 6.7;
+      }
+    },
+    // filters局部过滤器
+    filters: {
+      fmtGender(value) {
+        // if (value === 0) return '男'
+        // else if (value === 1) return '女'
+        // return '未知'
+        // let arr = ['男', '女'];
+        // return arr[value] ? arr[value] : '未知'
+        return ['男', '女'][value] || '未知'
+      }
+    },
+    watch: {
+      // 使用变量的名字作为函数
+      count(value) {
+        // value当前count被更改后的值
+        if (value <= 1) {
+          value = 1
+        } else if (value >= 5) {
+          value = 5
+        }
+        this.count = value;
+      }
+    },
+    data() {
+      return {
+        price: 1000,
+        count: 1,
+        userList: [{
+            id: 1,
+            name: 'aaa',
+            gender: 0
+          },
+          {
+            id: 2,
+            name: 'bbb',
+            gender: 1
+          },
+          {
+            id: 3,
+            name: 'ccc',
+            gender: 2
+          },
+        ]
+      }
+    },
+
+  })
+</script>
+</body>
+
+</html>

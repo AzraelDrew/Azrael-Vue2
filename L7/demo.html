@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    A [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+<div id="app">
+  <my-list :data="list"></my-list>
+  <my-list :data="list1"></my-list>
+  <my-list :data="list2">
+    <template v-slot="{row}">
+
+      <a href="">{{row.name}}</a>
+    </template>
+  </my-list>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
+  new Vue({
+    el: "#app",
+    // 局部组件
+    components: {
+      myList: {
+        props: ["data"],
+        template: `
+        <ul>
+    <li v-for="(item,i) in data">
+      {{item.id}}--<slot v-bind:row="item">{{item.name}}</slot>
+    </li>
+  </ul>
+        `,
+
+      }
+    },
+    data() {
+      return {
+        list: [{
+            id: 1,
+            name: "azrael"
+          },
+          {
+            id: 2,
+            name: "ace"
+          }
+
+        ],
+        list1: [{
+            id: 1,
+            name: "azrael11"
+          },
+          {
+            id: 2,
+            name: "ace11"
+          }
+
+        ],
+        list2: [{
+            id: 1,
+            name: "azrael22"
+          },
+          {
+            id: 2,
+            name: "ace22"
+          }
+
+        ],
+      }
+    },
+
+  })
+</script>
+</body>
+
+</html>

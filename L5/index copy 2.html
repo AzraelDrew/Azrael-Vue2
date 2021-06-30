@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .label::after {
+      content: ":";
+    }
+
+    .flex {
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head <body>
+<div id="app">
+  <ul>
+    <li class="flex">
+      <div class="label">
+        昵称
+      </div>
+      <div class="content">
+        <div v-if="isEdit">
+          <input type="text" v-model="val">
+          <button @click="confirm">确定</button>
+          <button @click="cancel">取消</button>
+        </div>
+        <div v-else @dblclick="edit">{{val}}</div>
+      </div>
+    </li>
+  </ul>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+<script>
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
+  new Vue({
+    el: "#app",
+    data() {
+      return {
+        val: "张三",
+        bakVal: "",
+        isEdit: false,
+      }
+    },
+    methods: {
+      edit() {
+        this.isEdit = !this.isEdit;
+        this.bakVal = this.val;
+      },
+      confirm() {
+        this.isEdit = !this.isEdit;
+        this.bakVal = "";
+      },
+      cancel() {
+        this.isEdit = !this.isEdit;
+        this.val = this.bakVal;
+        this.bakVal = "";
+      }
+    },
+
+  })
+</script>
+</body>
+
+</html>

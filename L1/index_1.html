@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>基础指令</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <input type="text" v-model.number.trim='age' @keydown.enter="test">
+    <input type="text" v-model.lazy='age'>
+    <!-- 
+    .number尝试转换为数字
+    .lazy当文本框失去焦点的时候更改
+    -->
+    <!-- 使用指令后,不再使用模板语法(大括号),而是直接使用变量-->
+    <!-- v-model  将age的值给input的value,同时监听input的输入事件,输入时改变age -->
+    <input type="text" value='10'>
+    {{age+10}}
+    <ul>
+      <li v-for='(item,i) in arr' :style="{color:i%2===0?' red':'black'}" :class="{zzz:i%2===0}">
+        {{i+1}}. <a :href="`deatil.html?id=${item}`">{{item}}</a>
+        <!-- v-bind  :  值是变化的时候使用 -->
+      </li>
+      <!-- v-for循环数组 -->
+    </ul>
+    <hr>
+    <!-- v-show 控制dispaly -->
+    <h1 v-show='show'>Azrael</h1>
+    <h1 v-show='!show'>Ace</h1>
+    <h1 v-show='2>1'>Ace</h1>
+    <h1 v-show='2===1'>Ace</h1>
+    <button @click.once='change'>切换</button>
+    <!-- .once只能使用一次 -->
+    <!-- v-on @ -->
+    <!-- v-if 如果为true，则创建标签，否则删除标签 -->
+    <h1 v-if='show'>Ace1</h1>
+    <h1 v-if='!show'>Ace2</h1>
+    <!-- 如果频繁的切换使用v-show  只操作一次使用v-if -->
+    <hr>
+    <h1 v-text='age'></h1>
+    <h1 v-text='str'></h1>
+    <h1 v-html='str'></h1>
+    <h1 v-once>{{age}}</h1> <!-- 只绑定一次  不再监听后续的变化，通常用于只渲染一次的场景 -->
+    <h1 v-red>{{age}}</h1>
+    <h1 v-color1='color'>{{age}}</h1>
+    <!-- <h1 v-color2='color'>{{age}}</h1> -->
+  </div>
+  <hr>
+  <div id="app2">
+    <h1 v-red>{{age}}</h1>
+    <h1 v-color1='color'>{{age}}</h1>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    // 自定义全局指令
+    Vue.directive('red', (el, data) => {
+      // console.log(el);
+      el.style.color = "red";
+    })
+    Vue.directive('color1', (el, data) => {
+      // console.log(el);
+      console.log(data);
+      el.style.color = data.value;
+    })
+
+
+    setTimeout(() => {
+
+      new Vue({
+        el: "#app",
+        directives: {
+          color2: (el, data) => {
+            {
+              el.style.color = data.value;
+            }
+          }
+        },
+        // data: function () {
+        //   return {}
+        // },
+        data() {
+          return {
+            show: true,
+            color: 'red',
+            age: 10,
+            str: `<button>zzz</button>`,
+            arr: [11, 22, 33]
+          }
+        },
+        methods: {
+          change() {
+            this.show = !this.show;
+          },
+          test(e) {
+            // if (e.keyCode === 13) {
+            //   alert("确定");
+            // }
+            alert("确定");
+          }
+        },
+      })
+    }, 2000)
+    new Vue({
+      el: "#app2",
+      data() {
+        return {
+          age: 20,
+          color: "blue"
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
