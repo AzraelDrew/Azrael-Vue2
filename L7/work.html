@@ -39,6 +39,14 @@
     #large {
       width: 100px;
     }
+
+    .small {
+      width: 50px;
+    }
+
+    .large {
+      width: 100px;
+    }
   </style>
 </head>
 
@@ -80,8 +88,9 @@
               default: "small"
             }
           },
+          // 绑定两个class用 数组
           template: `
-        <button :class="type" :id="size" style="width:100px">
+        <button :class="[type,size]" style="width:100px">
         <slot name="icon"></slot>
         <slot></slot>
         </button>

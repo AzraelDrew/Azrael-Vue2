@@ -1,0 +1,11 @@
+.s-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.s-table td,
+.s-table th {
+  text-align: center;
+  padding: 10px 0;
+  border: 1px solid #ccc;
+}

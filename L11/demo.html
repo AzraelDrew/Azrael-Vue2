@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./scss/main.css">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <s-table :cols="cols1" :data="list"></s-table>
+    <s-table :cols="cols2" :data="showList"></s-table>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    new Vue({
+      el: "#app",
+      components: {
+        "s-table": {
+          props: ["data", "cols"],
+          template: `
+          <table class="s-table">
+            <thead>
+              <tr>
+                <th v-for="(col) in cols">{{col.label}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item) in data">
+                <td v-for="(col) in cols">{{item[col.filed]}}</td>
+              </tr>
+            </tbody>
+          </table>`
+        }
+      },
+      data() {
+        return {
+          // cols1: ["编号", "姓名", "年龄"],
+          // fileds: ["id", "name", "age"],
+          cols1: [{
+              label: "编号",
+              filed: "id"
+            },
+            {
+              label: "姓名",
+              filed: "name"
+            },
+            {
+              label: "年龄",
+              filed: "age"
+            }
+          ],
+          cols2: [{
+              label: "标题",
+              filed: "title"
+            },
+            {
+              label: "价格",
+              filed: "price"
+            },
+          ],
+          list: [{
+
+              id: 1,
+              name: "zzz",
+              age: 20
+            },
+            {
+
+              id: 2,
+              name: "aaa",
+              age: 30
+            }, {
+
+              id: 3,
+              name: "ccc",
+              age: 40
+            }
+          ],
+          showList: [{
+
+              title: "zzz",
+              price: 20
+            },
+            {
+
+              title: "aaa",
+              price: 30
+            },
+          ],
+        }
+      },
+
+    })
+  </script>
+</body>
+
+</html>

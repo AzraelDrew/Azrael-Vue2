@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <zzz ref="a1"></zzz>
+    <ccc ref="a2"></ccc>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    Vue.component("zzz", {
+      data() {
+        return {
+          age: 10,
+          name: "zzz"
+        }
+      },
+      template: `
+      <h1>
+        Ace
+        <ccc></ccc>
+        </h1>
+      `,
+      created() {
+        console.log("zzz created", this.$parent.nickname);
+      },
+      mounted() {
+        console.log("zzz mounted", this.$parent);
+      }
+    })
+    Vue.component("ccc", {
+      data() {
+        return {
+          age: 10
+        }
+      },
+      template: `
+      <h1>CCC</h1>
+      `,
+      created() {
+        console.log("ccc created", this.$parent.name);
+        console.log("ccc created", this.$root.nickname);
+      },
+      mounted() {
+        console.log("ccc mounted", this.$parent);
+      }
+    })
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          name: "app",
+          nickname: "Azrael"
+        }
+      },
+      created() {
+        console.log("app created", this.$children);
+      },
+      mounted() {
+        console.log("app mounted", this.$children);
+        console.log("app mounted", this.$refs.a1.name);
+        console.log("app mounted", this.$refs.a1.age);
+      }
+
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1920059_1yo6532ne2m.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .star {
+      color: gold
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    {{score}}
+    <star :score='score' @change="setScore"></star>
+    <button>提交评价</button>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    Vue.component('star', {
+      props: {
+        count: {
+          type: Number,
+          default: 5,
+          validator(val) {
+            return val >= 0
+          }
+        },
+        score: {
+          type: Number,
+          default: 0,
+          validator(val) {
+            return val >= 0
+          }
+        }
+      },
+      template: `
+      <div>
+        <i class=" iconfont star" :class="item<=score?'iconstar6':'iconstar5'"
+        @mouseenter="updateScore(item)"
+        @mouseleave="updateScore(bak_score)"
+        @click="bak_score=item"
+        v-for="item in count"></i>
+        </div>
+      `,
+      created() {
+        if (this.score > this.count) throw "score不能大于count"
+        this.bak_score = this.score
+      },
+      methods: {
+        updateScore(val) {
+          this.$emit('change', val)
+        }
+      }
+    })
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          count: 5,
+          score: 1,
+          bak_score: 1
+        }
+      },
+      methods: {
+        setScore(data) {
+          this.score = data
+        }
+      }
+
+    })
+  </script>
+</body>
+
+</html>

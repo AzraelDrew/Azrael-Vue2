@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <aaa ref="a1"></aaa>
+    <aaa ref="a2"></aaa>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    Vue.component('aaa', {
+      template: `
+      <h1>AAAA
+        <bbb></bbb>
+        </h1>
+      
+      `,
+      data() {
+        return {
+          name: "aaa"
+        }
+      },
+      created() {
+        console.log("aaaname", this.$parent.name); //app
+      },
+      mounted() {
+        console.log("aaa", this.$children[0].name); //bbb
+      },
+    })
+    Vue.component('bbb', {
+      template: `
+      <h1>BBBB</h1>
+      `,
+      data() {
+        return {
+          name: "bbb"
+        }
+      },
+      created() {
+        console.log("bbbname", this.$parent.name); //aaa
+        console.log("bbbname", this.$parent.$parent.name); //app
+        console.log("bbbname", this.$root.name); //app
+      },
+      mounted() {
+        console.log("bbb", this.$children);
+      },
+    })
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          name: "app"
+        }
+      },
+      // 组件嵌套时顺序从外到内
+      created() {
+        console.log("appname", this.name); //app
+      },
+      // 组件嵌套时顺序从内到外
+      mounted() {
+        console.log("app", this.$children[0].name); //aaa
+        // $refs是一个对象，包含当前实例容器中的所有带有ref属性的元素
+        this.$refs.a1.name = "azrael"
+        console.log(this.$refs);
+      }
+    })
+  </script>
+</body>
+
+</html>

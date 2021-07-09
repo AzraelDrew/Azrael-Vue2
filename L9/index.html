@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1920059_1yo6532ne2m.css">
   <style>
     * {
       margin: 0;
@@ -16,24 +17,102 @@
     [v-cloak] {
       display: none;
     }
+
+    .star {
+      color: gold
+    }
   </style>
 </head>
 
 <body>
   <div id="app" v-cloak>
-
+    <!-- <i class=" iconfont star" :class="item<=score?'iconstar6':'iconstar5'" @mouseenter='score=item'
+      @mouseleave='score=bak_score' @click='bak_score=item' v-for='item in count'></i> -->
+    {{score1}}---{{score2}}
+    <!-- <star :score="score" @change='setScore'></star> -->
+    <star label="物流速度" :value="score1" @input='score1=$event'></star> <!-- $event为change事件传出的参数值-->
+    <!-- 在组件生使用v-model
+    v-model向当于同时有 :value @input
+    -->
+    <star label="客服态度" v-model="score2"></star>
+    <!-- 在组件props上使用sync修饰符 -->
+    <star label="客服态度" v-model="score2" :count.sync="count2"></star>
+    <!-- :count.sync='coun1' ===   :count='count1'  @update:count='$event'  -->
+    <!-- <star label="客服态度" v-model="score2" :count="count1" @changecount="count1=$event"></star> -->
+    <button>提交评价</button>
   </div>
   <script src="../vue.js"></script>
   <script>
     Vue.config.devtools = false;
     Vue.config.productionTip = false;
-    new Vue({
-      el: "#app",
-      data() {
-        return {
+    Vue.component("star", {
+      props: {
+        count: {
+          type: Number,
+          default: 5,
+          validator(val) {
+            return val >= 0
+          }
+        },
+        value: {
+          type: Number,
+          default: 0,
+          validator(val) {
+            return val >= 0
+          }
+        },
+        label: {
+          type: String,
 
         }
       },
+      template: ` 
+      <div>
+        <label>
+         {{label}} 
+        </label>
+        <i class=" iconfont star" :class="item<=value?'iconstar6':'iconstar5'" 
+        @mouseenter='updateScore(item)'
+        @mouseleave='updateScore(bak_score)' 
+        @click='bak_score=item' 
+        v-for='item in count'>
+        </i>
+        <button @click="$emit('update:count',3)">test</button>
+        </div>
+      `,
+      created() {
+        if (this.value > this.count) throw "score不能大于count"
+        this.bak_score = this.value
+      },
+      methods: {
+        updateScore(val) {
+          this.$emit("input", val);
+        }
+      },
+      data() {
+        return {
+          bak_score: 0
+        }
+      }
+    })
+    new Vue({
+      el: "#app",
+      components: {
+
+      },
+      data() {
+        return {
+          count1: 10,
+          count2: 7,
+          score1: 0,
+          score2: 0,
+        }
+      },
+      methods: {
+        // setScore(data) {
+        //   this.score = data
+        // }
+      }
 
     })
   </script>
