@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <!-- <home v-if="path==='/home'" @set-path="path=$event"></home>
+        <login v-if="path==='/login'" @set-path="path=$event"></login> -->
+        <component :is="path" @set-path="path=$event"></component>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        Vue.config.devtools = false;
+        Vue.config.productionTip = false;
+
+        // 路由的原理及实现
+
+        Vue.component('home', {
+            template: `
+            <div>
+                    HOME
+                <a href="javascript:;" @click="change">LOGIN</a>
+            </div>`,
+            methods: {
+                change() {
+                    this.$emit('set-path', 'login')
+                }
+            }
+        })
+        Vue.component('login', {
+            template: `
+            <div> 
+                    LOGIN
+                <a href="javascript:;" @click="change">HOME</a>
+            </div>`,
+            methods: {
+                change() {
+                    this.$emit('set-path', 'home')
+                }
+            }
+        })
+        new Vue({
+            el: "#app",
+            data() {
+                return {
+                    path: "home"
+                }
+            },
+            methods: {
+
+            }
+
+        });
+    </script>
+</body>
+
+</html>

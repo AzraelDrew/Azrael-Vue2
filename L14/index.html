@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <ul>
+            <li v-for="item in list">
+                {{item.nickname}}
+            </li>
+        </ul>
+    </div>
+    <script src="../vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="./request.js"></script>
+    <script>
+        Vue.config.devtools = false;
+        Vue.config.productionTip = false;
+
+
+        // axios
+        function req(url, data) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url,
+                    data,
+                    success(data) {
+                        resolve(data)
+                    },
+                    error(err) {
+                        reject(err)
+                    }
+                })
+            })
+        }
+
+        // function a() {
+        //     console.log(111);
+        // }
+
+        // async function b() {
+        //     let res = await req("http://simbajs.com:8888/sys/jslist")
+        //     console.log(222);
+        // }
+
+        // // function b() {
+        // //     let res = req("http://simbajs.com:8888/sys/jslist")
+        // //     console.log(222);
+        // // }
+
+        // function c() {
+        //     console.log(333);
+        // }
+        // a()
+        // b()
+        // c()
+
+
+        new Vue({
+            el: "#app",
+            async created() {
+                // 使用ax
+                // ax.get("http://simbajs.com:8888/sys/jslist").then(
+
+                //     // function (res) {
+                //     //     console.log(this); //window
+                //     // }
+                //     res => {
+                //         // console.log(res.data);
+                //         console.log(this);
+                //         this.list = res.data;
+                //     }
+                // )
+
+                // req("http://simbajs.com:8888/sys/jslist").then(res => {
+                //     return res.splice(0, 3)
+                //     this.list = res;
+                // }).then(res => {
+                //     return res[0]
+                // }).then(res => {
+                //     console.log(res.name);
+                // })
+
+                // let res = await req("http://simbajs.com:8888/sys/jslist")
+
+                // let res = await ax.get("http://simbajs.com:8888/sys/jslist")
+                // this.list = res.data;
+
+                let data = await $get("/sys/jslist");
+                // console.log(data);
+                this.list = data;
+                setInterval(async () => {}, 2000)
+                // let data1 = await $get("/sys/jslist")
+            },
+            data() {
+                return {
+                    list: []
+                }
+            },
+
+        });
+    </script>
+</body>
+
+</html>

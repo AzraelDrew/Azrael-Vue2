@@ -20,21 +20,14 @@
 </head>
 
 <body>
-    <div id="app" v-cloak>
 
-    </div>
-    <script src="vue.js"></script>
     <script>
-        Vue.config.devtools = false;
-        Vue.config.productionTip = false;
-        new Vue({
-            el: "#app",
-            data() {
-                return {
-
-                }
-            },
-
+        // 浏览器自带
+        fetch("http://simbajs.com:8888/sys/jslist").then(res => {
+            // console.log(res.json());
+            return res.json();
+        }).then(res => {
+            console.log(res);
         });
     </script>
 </body>
