@@ -21,8 +21,6 @@
 
 <body>
     <div id="app" v-cloak>
-        <!-- <home v-if="path==='/home'" @set-path="path=$event"></home>
-        <login v-if="path==='/login'" @set-path="path=$event"></login> -->
         <component :is="path" @set-path="path=$event"></component>
     </div>
     <script src="../vue.js"></script>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <sb-link to="home">首页</sb-link>
+    <sb-link to="login">登录</sb-link>
+    <sb-link to="user">用户</sb-link>
+    <sb-link to="zzz">ZZZ</sb-link>
+    <hr>
+    <sb-view></sb-view>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+
+    // 路由的原理及实现
+
+    // 用于页面跳转，点击时，修改地址栏的锚点链接
+    Vue.component("sb-link", {
+      props: ['to'],
+      template: `<a href="javascript:;" @click="setPath">
+                <slot></slot>
+                </a>`,
+      methods: {
+        setPath() {
+          // console.log(this.$root);
+          // this.$root.path = this.to;
+          // this.$parent.path = this.to;
+
+          // 点击链接是，修改浏览器地址栏中的路径，加上锚链接
+          // 因为锚链接不会跳转页面，又可以#后面的值来区分到底是那个页面
+          location.href = location.origin + location.pathname + "#" + this.to;
+        }
+      }
+    })
+
+    //用于渲染页面的容器，根据地址栏的锚链接名称来设置当前的组件 
+    Vue.component('sb-view', {
+      template: `  <component :is="path"></component>`,
+      data() {
+        return {
+          path: "home"
+        }
+      },
+      mounted() {
+        // 监听地址栏的变化，取得#后的值，来更新path
+        window.onhashchange = e => {
+          // console.log(location);
+          this.path = location.hash.replace("#", "")
+        }
+      }
+
+    })
+    Vue.component('home', {
+      template: `<div>HOME</div>`,
+    })
+    Vue.component('login', {
+      template: `<div>LOGIN</div>`,
+    })
+    Vue.component('user', {
+      template: `<div>USER</div>`,
+    })
+    Vue.component('zzz', {
+      template: `<div>ZZZ</div>`,
+    })
+    new Vue({
+      el: "#app",
+
+    });
+  </script>
+</body>
+
+</html>
