@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!--   <div id="app" v-cloak>
+    age:{{age}}
+    <br>
+    name:{{name}}
+    nickname:{{name}}
+  </div>
+  <div id="app2">
+    age:{{age}}
+    name:{{name}}
+  </div> -->
+  <div id="app"></div>
+  <div id="app2"></div>
+  <script src="../vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    /* 混入 */
+    // Vue.mixin({
+    //   // 如果是data或methods混入会优先使用实例的而不是混入的
+    //   data() {
+    //     return {
+    //       name: "Alex",
+    //       age: 70
+    //     }
+    //   },
+    //   // 每一个实例都会有mounted这个钩子函数
+    //   mounted() {
+    //     console.log("mounted");
+    //   },
+    //   created() {},
+    //   methods: {},
+    // })
+    // let mixin1 = {
+    //   data() {
+    //     return {
+    //       name: "Azrael"
+    //     }
+    //   }
+    // }
+    // new Vue({
+    //   el: "#app",
+    //   mixins: [mixin1],
+    //   data() {
+    //     return {
+    //       age: 10
+    //     }
+    //   },
+
+    // });
+    // new Vue({
+    //   el: "#app2",
+    //   data() {
+    //     return {
+    //       age: 30
+    //     }
+    //   },
+    //   mounted() {
+    //     console.log("mounted2222");
+    //   }
+    // })
+
+    Vue.mixin({
+      data() {
+        return {
+          BASE_URL: 'http://simbajs.com:7001'
+        }
+      },
+      mounted() {
+        console.log('渲染了' + this.name);
+      },
+      methods: {
+        $get(url, params) {
+          return axios.get(this.BASE_URL + url, {
+            params,
+          });
+        },
+        $post(url, params) {
+          return axios.get(this.BASE_URL + url, params);
+        },
+      },
+    });
+
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          age: 10,
+          name: 'app1',
+        };
+      },
+      mounted() {
+        this.getInfo();
+      },
+      methods: {
+        getInfo() {
+          // axios.get("http://simbajs.com:7001/system/getSysInfo", {})
+          let req = this.$get('/system/getSysInfo', {});
+          req.then(res => {
+            console.log(res.data);
+          });
+        },
+      },
+    });
+    new Vue({
+      el: '#app2',
+      data() {
+        return {
+          name: 'app2',
+        };
+      },
+      mounted() {
+        this.$get('/system/getSysInfo').then(res => {
+          console.log(res.data);
+        });
+      },
+    });
+  </script>
+</body>
+
+</html>

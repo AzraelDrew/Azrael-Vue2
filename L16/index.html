@@ -23,9 +23,11 @@
   <div id="app" v-cloak>
     <aaa></aaa>
     {{gender}}
+    age:{{age}}
     <bbb></bbb>
   </div>
   <script src="../vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <script>
     Vue.config.devtools = false;
     Vue.config.productionTip = false;
@@ -35,9 +37,20 @@
     // 全局混入
     Vue.mixin({
       // 一旦全局混入，此后的Vue实例都会有此钩子函数
-      // 如果Vue实例也有此钩子，那么会先执行混入的钩子在执行实例的钩子
+      // 如果组件中也有相同的钩子函数，则会有机合并，即先执行混入的，后执行组件自身的
       created() {
-        console.log("I am created", this.$el, this._uid);
+        console.log("I am created", this._uid);
+      },
+      data() {
+        return {
+          age: 20,
+          BASE_URL: "http://simbajs.com:8888"
+        }
+      },
+      methods: {
+        $get(src) {
+          return axios.get(this.BASE_URL + src);
+        }
       }
     })
 
@@ -48,21 +61,40 @@
           gender: 1
         }
       },
+      created() {
+        this.$get("/sys/jslist").then(res => {
+          console.log(res);
+        })
+      }
     })
+
     Vue.component("bbb", {
-      template: `<h2>BBBB</h2>`
+      data() {
+        return {
+          age: 5
+        }
+      },
+      template: `<h2>BBBB age:{{age}}</h2>`
     })
+
     new Vue({
       el: "#app",
       data() {
         return {
-          gender: 0
+          gender: 0,
+          age: 10
         }
       },
       created() {
-        console.log("Vue created");
+        console.log("Vue created", this.BASE_URL);
+      },
+      methods: {
+        login() {
+          axios.get(this.BASE_URL + "/sys/jslist").then(res => {
+            console.log(res);
+          })
+        }
       }
-
     });
   </script>
 </body>
