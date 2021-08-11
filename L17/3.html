@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <sb-link to="login" @set-path="path=$event">登录</sb-link>
+        <sb-link to="home" @set-path="path=$event">首页</sb-link>
+        <sb-link to="user" @set-path="path=$event">用户</sb-link>
+        <hr>
+        <component :is="path"></component>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        Vue.config.devtools = false;
+        Vue.config.productionTip = false;
+
+        // 路由的原理及实现
+
+        Vue.component("sb-link", {
+            props: ['to'],
+            template: `<a href="javascript:;" @click="$emit('set-path', to)">
+                <slot></slot>
+                </a>`
+        })
+        Vue.component('home', {
+            template: `<div>HOME</div>`,
+        })
+        Vue.component('login', {
+            template: `<div>LOGIN</div>`,
+        })
+        Vue.component('user', {
+            template: `<div>USER</div>`,
+        })
+        new Vue({
+            el: "#app",
+            data() {
+                return {
+                    path: "home"
+                }
+            },
+            methods: {
+
+            }
+
+        });
+    </script>
+</body>
+
+</html>

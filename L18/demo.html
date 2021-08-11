@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .red {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <sb-link to="/home" tag="div">首页</sb-link>
+    <sb-link to="/login" tag="div">登录</sb-link>
+    <sb-link to="/user" tag="div">用户</sb-link>
+    <hr>
+    <sb-view></sb-view>
+  </div>
+  <script src="../vue.js"></script>
+  <script src="azrael-router.plugin.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+
+    // 路由的原理及实现
+    let Home = {
+      template: `<div>HOME</div>`,
+    }
+    let Login = {
+      template: `<div>LOGIN</div>`,
+    }
+    let User = {
+      template: `<div>USER</div>`,
+    }
+
+    let routes = [{
+      path: "/login",
+      component: Login
+    }, {
+      path: "/home",
+      component: Home
+    }, {
+      path: "/user",
+      component: User
+    }];
+
+    Vue.use(AzraelRouter)
+
+    new Vue({
+      el: "#app",
+
+    });
+  </script>
+</body>
+
+</html>

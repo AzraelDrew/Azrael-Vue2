@@ -16,17 +16,31 @@
     [v-cloak] {
       display: none;
     }
+
+    .a-tip {
+      border-left: 5px solid #369;
+      padding: 10px;
+      margin: 10px;
+      font-weight: bold;
+      background-color: #f5f5f5;
+    }
   </style>
 </head>
 
 <body>
   <div id="app" v-cloak>
-
+    <a-tip>Hello</a-tip>
+    <a-tip v-red>Hello</a-tip>
+    <a-tip>{{0 | fmtGender}}</a-tip>
   </div>
-  <script src="vue.js"></script>
+  <script src="../vue.js"></script>
+  <script src="./azrael.plugin.js"></script>
   <script>
     Vue.config.devtools = false;
     Vue.config.productionTip = false;
+
+    // 插件
+
     new Vue({
       el: "#app",
       data() {
@@ -34,7 +48,6 @@
 
         }
       },
-
     });
   </script>
 </body>

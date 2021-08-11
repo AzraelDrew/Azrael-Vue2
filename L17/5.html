@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <sb-link tag="button">登录</sb-link>
+    <sb-link tag="div">登录</sb-link>
+    <sb-link tag="li">登录</sb-link>
+    <sb-link>登录</sb-link>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+
+    // 路由的原理及实现
+
+    // 用于页面跳转，点击时，修改地址栏的锚点链接
+    Vue.component("sb-link", {
+      props: {
+        tag: {
+          type: String,
+          default: "a"
+        }
+      },
+      // template: `<a href="javascript:;">
+      //           <slot></slot>
+      //           </a>`,
+
+      // 自定义模板标签
+      render(createElement) {
+        let attrs = {};
+        if (this.tag === "a") {
+          attrs.href = "javascript:;"
+        }
+        return createElement(this.tag, {
+          // 'class': {
+          //   active: true
+          // },
+          // style: {
+          //   color: 'red'
+          // },
+          attrs,
+          on: {
+            click: this.test
+          }
+        }, this.$slots.default) //vnode   this.$slots.default相当于默认插槽
+      },
+      methods: {
+        test() {
+          console.log("test");
+        }
+      }
+    })
+
+
+    new Vue({
+      el: "#app",
+
+    });
+  </script>
+</body>
+
+</html>
