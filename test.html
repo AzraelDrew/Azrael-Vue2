@@ -20,37 +20,48 @@
 </head <body>
 
 <div id="app">
-  <input type="text" v-model="age">
+  <!-- <input type="text" v-model="age"> -->
 </div>
 <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
 <script>
   Vue.config.devtools = false;
   Vue.config.productionTip = false;
+  // new Vue({
+  //   el: "#app",
+  //   mounted() {
+  //     console.log(this.age);
+  //   },
+  //   updated() {
+  //     console.log(this.age);
+
+  //   },
+  //   data() {
+  //     return {
+  //       age: 20
+  //     }
+  //   },
+
+  // }); {
+
+  //   async function test() {
+  //     // 会等Promise的状态完成后才执行后面的代码
+  //     await new Promise((resolve, reject) => {
+
+  //     })
+  //     console.log(124425);
+  //   }
+  // }
   new Vue({
     el: "#app",
     mounted() {
-      console.log(this.age);
+      this.log()
     },
-    updated() {
-      console.log(this.age);
-
-    },
-    data() {
-      return {
-        age: 20
+    methods: {
+      log() {
+        console.log(1111);
       }
-    },
-
-  }); {
-
-    async function test() {
-      // 会等Promise的状态完成后才执行后面的代码
-      await new Promise((resolve, reject) => {
-
-      })
-      console.log(124425);
     }
-  }
+  })
 </script>
 </body>
 
