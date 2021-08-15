@@ -3,6 +3,11 @@ const {
 } = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const {
+  VueLoaderPlugin
+} = require('vue-loader')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 const path = require('path');
 
 module.exports = {
@@ -25,6 +30,9 @@ module.exports = {
   module: {
     // 规则
     rules: [{
+        test: /\.js$/,
+        loader: 'babel-loader'
+      }, {
         // 正则
         test: /\.(png|jpg|gif)$/,
         // 但与上面匹配时，使用下面的加载器处理
@@ -40,15 +48,19 @@ module.exports = {
         // 正则
         test: /\.css$/,
         // 但与上面匹配时，使用下面的加载器处理
-        use: ['style-loader', 'css-loader']
+        use: ["vue-style-loader", 'css-loader']
       },
       {
         test: /\.scss$/,
         use: [
-          "style-loader", // 将 JS 字符串生成为 style 节点
+          "vue-style-loader", // 将 JS 字符串生成为 style 节点
           "css-loader", // 将 CSS 转化成 CommonJS 模块
           "sass-loader" // 将 Sass 编译成 CSS
         ] //从后往前走
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
       }
     ]
   },
@@ -58,7 +70,16 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       // title: "Azrael",
-      template: "public/index.html"
+      template: "./public/index.html"
+    }),
+    new VueLoaderPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [{
+          from: "public/js/vue.js",
+          to: "js/vue.js"
+        },
+
+      ],
     }),
 
   ],
@@ -68,5 +89,16 @@ module.exports = {
       "@": path.resolve(__dirname, 'src'),
       "~a": path.resolve(__dirname, 'src/assets'),
     }
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 9000,
+    open: true,
+  },
+  // 排除某些包不参与打包
+  externals: {
+    jquery: 'jQuery',
+    vue: "Vue"
   }
 };

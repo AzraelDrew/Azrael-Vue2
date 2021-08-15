@@ -1,15 +1,20 @@
-import {
-  b
-} from "./js/b"
-console.log(b);
-// tree-sharking 打包时剔除无用代码，减小打包后的体积
-import test from "./js/b"
-import "./assets/css/a.css"
-import "./assets/css/z.scss"
-let count = Math.random();
-console.log(test(count));
+import Vue from "vue" //会将第三方的包合并到我们打包的文件中
+import Home from "./components/Home"
+import App from './App.vue'
 
-import img2 from "./assets/img/02.jpg"
-let img3 = document.createElement("img")
-img3.src = img2
-document.body.appendChild(img3)
+new Vue({
+  el: "#app",
+  // template: "<div id='app'>Azrael App</div>",
+  render(h) {
+    return h(App)
+  },
+  data() {
+    return {
+      age: 1
+    }
+  },
+  created() {
+    console.log("App", this.age);
+  }
+
+})
