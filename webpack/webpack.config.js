@@ -70,7 +70,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       // title: "Azrael",
-      template: "./public/index.html"
+      template: "public/index.html"
     }),
     new VueLoaderPlugin(),
     new CopyWebpackPlugin({
