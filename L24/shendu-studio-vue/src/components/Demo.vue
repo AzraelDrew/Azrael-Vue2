@@ -20,8 +20,7 @@
     components: {
 
     },
-    methods: {},
-
+    methods: {}
   }
 </script>
 

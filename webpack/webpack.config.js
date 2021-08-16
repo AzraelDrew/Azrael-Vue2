@@ -86,6 +86,7 @@ module.exports = {
   // 解析
   resolve: {
     alias: {
+      // 定义别名
       "@": path.resolve(__dirname, 'src'),
       "~a": path.resolve(__dirname, 'src/assets'),
     }

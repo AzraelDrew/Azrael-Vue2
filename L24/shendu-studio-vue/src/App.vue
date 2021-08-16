@@ -6,39 +6,95 @@
     -->
     <!-- <Demo :age="age1" @click.native="test" />
     <Demo :age="age1" @click1="test" /> -->
-    <Demo :age="age1" @change="changeVal($event)" />
+    <Demo :age="age1" @change="changeVal" />
     <Demo :age="age2" @change="changeVal2" />
+    <i class="fas fa-address-book    "></i>
+
+    <swiper ref="mySwiper" :options="swiperOptions">
+      <swiper-slide>Slide 1</swiper-slide>
+      <swiper-slide>Slide 2</swiper-slide>
+      <swiper-slide>Slide 3</swiper-slide>
+      <swiper-slide>Slide 4</swiper-slide>
+      <swiper-slide>Slide 5</swiper-slide>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </swiper>
   </div>
 </template>
 
 <script>
-  import Demo from "./components/Demo.vue"
+  import Demo from "~com/Demo.vue"
+  import qs from "qs"
+  import {
+    Swiper,
+    SwiperSlide,
+    directive
+  } from 'vue-awesome-swiper'
+  import 'swiper/css/swiper.css'
+  // import 'swiper/swiper-bundle.css'
+
+
+  console.log({
+    a: 1,
+    b: 2
+  });
+  console.log(qs.stringify({
+    a: 1,
+    b: 2
+  }));
   export default {
     data() {
       return {
         age1: 20,
-        age2: 30
+        age2: 30,
+        swiperOptions: {
+          pagination: {
+            el: '.swiper-pagination',
+          },
+          loop: true,
+          autoplay: true,
+          // Some Swiper option/callback...
+        }
       }
     },
     components: {
-      Demo
+      Demo,
+      Swiper,
+      SwiperSlide
+    },
+    directives: {
+      swiper: directive
     },
     methods: {
       test() {
         console.log("hhhhhhhhhh");
       },
-      changeVal(e, data) {
+      changeVal(e) {
         this.age1 = e
-        console.log(data);
       },
       changeVal2(e) {
         this.age2 = e
       }
-    }
+    },
   }
 </script>
 
-<style lang='scss'>
+<style lang="scss">
+  .swiper-container {
+    width: 600px;
+    height: 300px;
+    border: 2px solid black;
+  }
 
+  .swiper-container {
+    .swiper-pagination-bullet {
+      border-radius: 0;
+      height: 4px;
+      width: 20px;
 
+      &.swiper-pagination-bullet-active {
+        background: red;
+      }
+    }
+
+  }
 </style>
