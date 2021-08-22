@@ -13,5 +13,6 @@ export default Vue => {
     }
     Vue.component("al-" + kebabCase(ComName), context(filePath).default);
   })
+  console.log("全局组件")
 
 }

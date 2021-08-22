@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .tabs {
+      width: 300px;
+    }
+
+    .tabs .title {
+      display: flex;
+    }
+
+    .tabs .title li {
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .tabs .title li.active {
+      background: red;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <!--     <div class="tabs">
+      <ul class="title">
+        <li :class="{active:active===i}" v-for="(item,i) in tabs" @click="active=i">
+          {{item.title}}
+        </li>
+      </ul>
+      <ul>
+        <li v-show="active===i" v-for="(item,i) in tabs">
+          {{item.content}}
+        </li>
+      </ul>
+    </div> -->
+
+    <s-tabs @change="msg">
+      <s-tab-item label="火车票">
+        火车票
+        <button>111</button>
+        <input type="text">
+      </s-tab-item>
+      <s-tab-item label="汽车票">
+        汽车票
+        <button>222</button>
+        <input type="text">
+      </s-tab-item>
+      <s-tab-item label="飞机票">
+        飞机票
+        <button>333</button>
+        <input type="text">
+      </s-tab-item>
+    </s-tabs>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    Vue.component("s-tabs", {
+      data() {
+        return {
+          tabs: [],
+          active: 0
+        }
+      },
+      watch: {
+        active() {
+          this.$children.forEach((r, i) => {
+            // if (i === this.active) {
+            //   r.show = true;
+            // } else {
+            //   r.show = false;
+            // }
+            r.show = i === this.active;
+          })
+          this.$emit("change", this.active)
+        }
+      },
+      created() {
+        // console.log(this.$children);
+        // console.log(this.$children);
+      },
+      mounted() {
+        // console.log(this.$children);
+
+        this.$children[this.active].show = true;
+      },
+      template: `
+      <div class="tabs">
+        <ul class="title">
+          <li :class="{active:active===i}" v-for="(title,i) in tabs" @click="active=i">
+          {{title}}
+          </li>
+        </ul>
+        <slot></slot>
+      </div>`
+    })
+    Vue.component("s-tab-item", {
+      props: ["label"],
+      data() {
+        return {
+          show: false
+        }
+      },
+      created() {
+        // console.log(this.$parent);
+        this.$parent.tabs.push(this.label)
+      },
+      template: `
+      <div v-show="show">
+        <slot></slot>
+      </div>`
+    })
+    new Vue({
+      el: "#app",
+      methods: {
+        msg(e) {
+          console.log(e);
+        }
+      },
+      data() {
+        return {
+
+        }
+      },
+
+    })
+  </script>
+</body>
+
+</html>

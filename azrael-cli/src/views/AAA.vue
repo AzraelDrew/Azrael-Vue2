@@ -1,16 +1,17 @@
 <template>
   <div>
+
     <fieldset style="padding:10px">
       <div>
-        <router-link to="/aaa">AAA</router-link>
-        <router-link to="/bbb">BBB</router-link>
+        <router-link to="/ccc">CCC</router-link>
+        <router-link to="/ddd">DDD</router-link>
       </div>
-      <legend>HOME</legend>
+      <legend>AAA</legend>
       <router-view></router-view>
     </fieldset>
-
   </div>
 </template>
+
 <script>
   export default {
     data() {
@@ -18,11 +19,9 @@
 
       }
     },
-    beforeRouteEnter(to, from, next) {
+    components: {
 
-      next();
     }
-
   }
 </script>
 

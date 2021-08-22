@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <a href="javascript:;" @click="currentComponent='aaa'">a</a>
+    <a href="javascript:;" @click="currentComponent='bbb'">b</a>
+    <a href="javascript:;" @click="currentComponent='ccc'">c</a>
+    <!-- is="组件名"   会在此处渲染组件-->
+    <component :is="currentComponent"></component>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+
+    // 动态组件
+    Vue.component("aaa", {
+      template: `<h1>AAA</h1>`,
+      created() {
+        console.log("aaa created");
+      },
+      beforeDestroy() {
+        console.log("aaa beforeDestroy");
+      },
+      Destroyed() {
+        console.log("aaa Destroyed");
+      }
+    })
+    Vue.component("bbb", {
+      template: `<h1>BBB</h1>`,
+      beforeDestroy() {
+        console.log("bbb beforeDestroy");
+      },
+      Destroyed() {
+        console.log("bbb Destroyed");
+      }
+    })
+    Vue.component("ccc", {
+      template: `<h1>CCC</h1>`,
+      beforeDestroy() {
+        console.log("ccc beforeDestroy");
+      },
+      Destroyed() {
+        console.log("ccc Destroyed");
+      }
+    })
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          currentComponent: "aaa",
+        }
+      },
+
+    });
+  </script>
+</body>
+
+</html>

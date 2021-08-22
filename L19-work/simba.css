@@ -1,0 +1,93 @@
+[v-cloak] {
+  display: none;
+}
+
+html,
+body {
+  margin: 0px;
+}
+
+.h100 {
+  height: 100vh;
+}
+.font12 {
+  font-size: 12px;
+}
+.title1 {
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.primary {
+  color: #369;
+}
+
+.danger {
+  color: #e9292c;
+}
+
+ul,
+ol,
+li {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.radius {
+  border-radius: 5px;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.t-c {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap !important;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.j-c {
+  justify-content: center;
+}
+
+.j-s {
+  justify-content: space-between;
+}
+
+.a-c {
+  align-items: center;
+}
+
+.a-s {
+  align-content: space-between;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.un-suggestion {
+  color: #ccc;
+}

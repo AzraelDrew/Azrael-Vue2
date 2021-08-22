@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    {{obj.age1}}
+    <hr>
+    {{arr}}
+    <button @click="setVal">切换</button>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+    new Vue({
+      el: "#app",
+      // 当Vue实例初始化时，会对data中的变量进行响应式处理
+      // 初始化完成之后，如果data中的对象新增属性等，不会被再次响应式处理
+      data() {
+        return {
+          obj: {
+            age1: 10
+          },
+          arr: [11, 22, {
+            age: 33
+          }]
+        }
+      },
+      mounted() {
+        // this.arr.push(44) //因为整个数组是响应式的，所以push会刷新页面，但是要等整个mounted执行完毕后才刷新页面，所以页面拿到的是最新的值
+        this.arr[1] = 2222; //不会变
+        // 修改数组中哦某个下标对应的元素本身时，需要$set
+        // this.$set(this.arr, 1, 2222)
+        // this.arr[2].age = 33333;   //会变
+        // this.arr[2] = 33333;   //不会变
+        console.log(this.arr);
+        // // data中没有定义的属性，在后续需要使用时，为了让属性变为响应式的，得用$set
+        // this.$set(this.obj, 'age', 20); //第一个参数为添加属性的目标对象   第二个参数为添加的属性   第三个为属性的值
+        // this.obj.age = 60;
+        // console.log(this.obj);
+        // this.obj.age1 = 30
+      },
+      methods: {
+        setVal() {
+          this.obj.age = 20;
+          console.log(this.obj);
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

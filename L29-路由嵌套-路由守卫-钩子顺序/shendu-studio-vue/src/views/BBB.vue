@@ -1,14 +1,6 @@
 <template>
   <div>
-    LOGIN
-    <br>
-    <label for="">
-      帐号: <input type="">
-    </label>
-    <br>
-    <label for="">
-      密码: <input type="">
-    </label>
+    BBB
   </div>
 </template>
 

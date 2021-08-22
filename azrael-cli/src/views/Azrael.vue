@@ -1,14 +1,10 @@
 <template>
   <div>
-    LOGIN
+    <Strong>Azrael</Strong>
     <br>
-    <label for="">
-      帐号: <input type="">
-    </label>
-    <br>
-    <label for="">
-      密码: <input type="">
-    </label>
+    <router-link to="/home">首页</router-link>
+    <router-link to="/login">登录</router-link>
+
   </div>
 </template>
 

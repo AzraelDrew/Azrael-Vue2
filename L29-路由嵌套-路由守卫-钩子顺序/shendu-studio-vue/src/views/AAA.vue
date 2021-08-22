@@ -1,16 +1,15 @@
 <template>
   <div>
+    <router-link to="/ccc">CCC</router-link>
+    <router-link to="/ddd">DDD</router-link>
+    <!-- 渲染AAA的路由 -->
     <fieldset style="padding:10px">
-      <div>
-        <router-link to="/aaa">AAA</router-link>
-        <router-link to="/bbb">BBB</router-link>
-      </div>
-      <legend>HOME</legend>
+      <legend>AAA的子路由的router-view</legend>
       <router-view></router-view>
     </fieldset>
-
   </div>
 </template>
+
 <script>
   export default {
     data() {
@@ -18,11 +17,9 @@
 
       }
     },
-    beforeRouteEnter(to, from, next) {
+    components: {
 
-      next();
     }
-
   }
 </script>
 

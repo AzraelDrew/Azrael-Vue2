@@ -1,14 +1,8 @@
 <template>
   <div>
-    LOGIN
-    <br>
-    <label for="">
-      帐号: <input type="">
-    </label>
-    <br>
-    <label for="">
-      密码: <input type="">
-    </label>
+    <button style="color:red">
+      <slot></slot>
+    </button>
   </div>
 </template>
 

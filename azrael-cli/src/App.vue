@@ -18,7 +18,19 @@
     </h1>
     <i class="fas fa-address-book    "></i>
 
-    <router-view></router-view>
+    <br>
+    <div class="flex j-c">
+      <div style="border:2px solid red;width:20vw;height:40vh">
+        <ul>
+          <!-- <router-link tag="li" to="/">Azrael</router-link> -->
+          <router-link tag="li" to="/">HOME</router-link>
+          <router-link tag="li" to="/login">LOGIN</router-link>
+        </ul>
+      </div>
+      <div style="border:2px solid red;width:80vw;height:40vh">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 

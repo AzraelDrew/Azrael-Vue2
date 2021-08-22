@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .dropdown {
+      width: 100px;
+      border: 1px solid red
+    }
+
+    .dropdown .label {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .dropdown ul li {
+      padding: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <h1 v-clickout="zzz">hello</h1>
+    <div class="dropdown" ref="dropdown" v-clickout="hide">
+      <div class="label" @click="show=!show">click me</div>
+      <!-- 此处利用冒泡，点击menu是也会隐藏-->
+      <ul v-show="show" @click="show=!show">
+        <li @click="test1">menu 1</li>
+        <li @click="test2">menu 1</li>
+        <li>menu 1</li>
+      </ul>
+    </div>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    Vue.config.devtools = false;
+    Vue.config.productionTip = false;
+
+    Vue.directive("clickout", {
+      bind(el, binding) {
+        el.__click__ = (e) => {
+
+          // let dropdown = this.$refs.dropdown; //必须放在函数内部
+          // console.log(dropdown.contains(e.target));   //判断点击的位置是否在dropdown里面
+          // 点击dropdown外面 执行对应从操作
+          if (!el.contains(e.target)) {
+            // this.show = false; //此处的this为window
+            binding.value(); //hide  指令的参数
+          }
+        }
+        window.addEventListener("click", el.__click__)
+      },
+      unbind(el) {
+        // console.log(el);
+        window.removeEventListener("click", el.__click__)
+        delete el.__click__;
+      }
+
+
+
+    });
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          show: false
+        }
+      },
+      methods: {
+        test1() {
+          console.log("test1");
+        },
+        test2() {
+          console.log("test2");
+        },
+        hide() {
+          this.show = false;
+          // console.log(this);
+        },
+        zzz() {
+          console.log("11111");
+        }
+      },
+    });
+  </script>
+</body>
+
+</html>
