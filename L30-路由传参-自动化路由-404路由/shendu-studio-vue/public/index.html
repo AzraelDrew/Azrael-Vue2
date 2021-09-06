@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+      Please enable it to continue.</strong>
+  </noscript>
+  <div id="app">
+    <!-- 
+当vue还没有加载好时，会先显示app中打内容
+当vue加载好打时候会将app中打内容覆盖
+
+ -->
+    <style>
+      #app {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+      }
+    </style>
+    <h1>LODING...</h1>
+  </div>
+  <script src="./js/vue.min.js"></script>
+  <script src="./js/vue-router.min.js"></script>
+</body>
+
+</html>
